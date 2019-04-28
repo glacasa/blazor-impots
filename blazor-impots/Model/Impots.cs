@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,5 +28,10 @@ namespace BlazorImpots.Model
                 return EtatCivil + partsEnfants + PartsSupplementaires;
             }
         }
+
+        public IEnumerable<Revenu> Revenus { get; } = new List<Revenu>() {
+            new Salaire(18000),
+            new Foncier(2400),
+        };
     }
 }
