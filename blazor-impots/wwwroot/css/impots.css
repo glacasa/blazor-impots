@@ -1,0 +1,17 @@
+.fa-question-circle {
+  float: right;
+  cursor: help;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.table.income td:nth-child(2) {
+  width: 50%;
+}
+
+td.small{
+  font-style: italic;
+}
