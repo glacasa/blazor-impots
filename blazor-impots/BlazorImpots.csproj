@@ -9,7 +9,7 @@
     <LangVersion>8.0</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
     <RootNamespace>BlazorImpots</RootNamespace>
-    <AssemblyName>BlazorImpots</AssemblyName>
+    <AssemblyName>blazor-impots</AssemblyName>
     <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 

@@ -32,9 +32,8 @@ namespace BlazorImpots.Model
             }
         }
 
-        public IEnumerable<Revenu> Revenus { get; } = new List<Revenu>() {
-            new Salaire(18000),
-            new Foncier(2400),
+        public IList<Revenu> Revenus { get; } = new List<Revenu>() {
+            new Salaire(21600),
         };
     }
 }
