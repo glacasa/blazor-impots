@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using BlazorImpots
+@using BlazorImpots.Components
+@using BlazorImpots.Model
 
 <header>
     <div class="navbar navbar-dark bg-dark box-shadow">
@@ -28,7 +31,7 @@
                     <tr>
                         <td>Vous déclarez vos impôts :</td>
                         <td>
-                            <select class="form-control form-control-sm" bind="Model.EtatCivil">
+                            <select class="form-control form-control-sm" bind="Context.EtatCivil">
                                 <option value="1">seul</option>
                                 <option value="2">en couple (mariage / PACS)</option>
                             </select>
@@ -41,7 +44,7 @@
                     <tr>
                         <td>Nombre d'enfants à charge :</td>
                         <td>
-                            <input type="number" bind="Model.NbEnfants" min="0" max="20" id="nbEnfants"
+                            <input type="number" bind="Context.NbEnfants" min="0" max="20" id="nbEnfants"
                                    class="form-control form-control-sm" />
                         </td>
                         <td>
@@ -52,7 +55,7 @@
                     <tr>
                         <td>Parts supplémentaires :</td>
                         <td>
-                            <input type="number" bind="Model.PartsSupplementaires" min="0" max="5" step="0.25"
+                            <input type="number" bind="Context.PartsSupplementaires" min="0" max="5" step="0.25"
                                    id="partsSupplementaires" class="form-control form-control-sm" />
                         </td>
                         <td>
@@ -63,7 +66,7 @@
                     <tr>
                         <td>Nombre de parts :</td>
                         <td>
-                            <strong>@Model.NbParts</strong>
+                            <strong>@Context.NbParts</strong>
                         </td>
                         <td></td>
                     </tr>
@@ -83,45 +86,116 @@
                         <th scope="col">Revenus</th>
                         <th class="d-hidden d-md-table-cell"></th>
                         <th colspan="3">
-                            @if (Model.Revenus.Any())
+                            @if (Context.Revenus.Any())
                             {
-                            <button class="btn btn-sm btn-primary float-right" onclick="@AjouterRevenu">
-                                <i class="fas fa-plus"></i> Ajouter des revenus
-                            </button>
+                                <button class="btn btn-sm btn-primary float-right" onclick="@AjouterRevenu">
+                                    <i class="fas fa-plus"></i> Ajouter des revenus
+                                </button>
                             }
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (!Model.Revenus.Any())
+                    @if (!Context.Revenus.Any())
                     {
-                    <tr v-if="revenus.length === 0">
-                        <td colspan="6" class="text-center">
-                            <button class="btn btn-lg btn-primary" onclick="@AjouterRevenu">
-                                <i class="fas fa-plus"></i> Ajouter des revenus
-                            </button>
-                        </td>
-                    </tr>
+                        <tr v-if="revenus.length === 0">
+                            <td colspan="6" class="text-center">
+                                <button class="btn btn-lg btn-primary" onclick="@AjouterRevenu">
+                                    <i class="fas fa-plus"></i> Ajouter des revenus
+                                </button>
+                            </td>
+                        </tr>
                     }
-                    @foreach (var r in Model.Revenus)
+                    @foreach (var r in Context.Revenus)
                     {
+                        <tr>
+                            <td>@r.Libelle</td>
+                            <td class="d-none d-md-table-cell">
+                                <input type="range" bind="r.Montant" min="0" max="100000" step="600" v-bind:max="r.maxDisplay" v-bind:step="r.step"
+                                       class="form-control-range" />
+                            </td>
+                            <td>
+                                <input type="number" bind="r.Montant" class="form-control" />
+                            </td>
+                            <td>@(r.Montant / 12)&nbsp;€/mois)</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" click="suppressionRevenus(r)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <table class="table table-dark">
+                <thead>
                     <tr>
-                        <td>@r.Libelle</td>
-                        <td class="d-none d-md-table-cell">
-                            <input type="range" bind="r.Montant" min="0" max="100000" step="600" v-bind:max="r.maxDisplay" v-bind:step="r.step"
-                                   class="form-control-range" />
-                        </td>
+                        <th colspan="3">Impôt sur le revenu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total des revenus sur l'année</td>
+                        <td>@Context.RevenusTotaux €</td>
                         <td>
-                            <input type="number" bind="r.Montant" class="form-control" />
-                        </td>
-                        <td>@(r.Montant/12)&nbsp;€/mois)</td>
-                        <td>
-                            <button class="btn btn-sm btn-danger" click="suppressionRevenus(r)">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                            <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                               title="Montant net des revenus gagnés au cours de l'année"></i>
                         </td>
                     </tr>
+                    <tr>
+                        <td>Revenu fiscal de référence</td>
+                        <td>@Context.TotalImposable €</td>
+                        <td>
+                            <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                               title="Montant pris en compte pour le calcul de l'impôt"></i>
+                        </td>
+                    </tr>
+                    @if (Context.DroitsSimples != Context.MontantTotalIR)
+                    {
+                        <tr>
+                            <td class="small">Droits simples</td>
+                            <td class="small">@Context.DroitsSimples €</td>
+                            <td>
+                                <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                                   title="Montant à payer calculé avant réductions"></i>
+                            </td>
+                        </tr>
                     }
+                    @if (Context.Decote > 0)
+                    {
+                        <tr>
+                            <td class="small">Décote</td>
+                            <td class="small">-@Context.Decote €</td>
+                            <td>
+                                <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                                   title="Diminution de l'impot lorsque le montant brut est inférieur à un certain seuil"></i>
+                            </td>
+                        </tr>
+                    }
+                    @if (Context.Allegement > 0)
+                    {
+                        <tr>
+                            <td class="small">Allégement sous conditions de ressources</td>
+                            <td class="small">-@Context.Allegement €</td>
+                            <td>
+                                <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                                   title="Allègement de l'impôt lorsque le revenu fiscal de référence est inférieur à un certain seuil"></i>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>Impôt sur le revenu net</td>
+                        <td>@Context.MontantTotalIR €</td>
+                        <td>
+                            <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                               title="Montant total à payer pour l'impôt sur le revenu"></i>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -131,16 +205,17 @@
 </div>
 
 @functions{
-    private Impots Model { get; } = new Impots();
+    private Impots Context { get; } = new Impots();
 
     private AjoutRevenu ajoutRevenusDialog;
 
-    private async void AjouterRevenu(){
+    private async void AjouterRevenu()
+    {
         await ajoutRevenusDialog.Open();
     }
 
     private void NouveauRevenu(NouveauRevenuEventArgs args)
     {
-        Model.Revenus.Add(args.NouveauRevenu);
+        Context.Revenus.Add(args.NouveauRevenu);
     }
 }
