@@ -18,6 +18,9 @@ namespace BlazorImpots.Model
         {
             get
             {
+                //Calcul du nombre de parts
+                // https://www.service-public.fr/particuliers/vosdroits/F2702
+                // https://www.service-public.fr/particuliers/vosdroits/F2705
                 var partsEnfants = NbEnfants switch
                 {
                     0 => 0,

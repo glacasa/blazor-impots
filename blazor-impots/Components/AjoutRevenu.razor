@@ -1,0 +1,50 @@
+﻿    <!-- Ajout de revenus -->
+<div class="modal fade" id="incomeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter des revenus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="selectTypeRevenu">Type de revenus</label>
+                    <select id="selectTypeRevenu" class="form-control form-control-sm" v-model="typeNouveauRevenu">
+                        <option value="salaire">Salaire</option>
+                        <option value="foncier">Foncier</option>
+                        <option value="dividende">Dividendes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="libelleRevenu">Libellé</label>
+                    <input id="libelleRevenu" type="text" class="form-control form-control-sm"
+                           v-model="nouveauRevenu.libelle" />
+                </div>
+                <div class="form-group">
+                    <label for="montantRevenu">Montant</label>
+                    <input id="montantRevenu" type="number" class="form-control form-control-sm"
+                           v-model.number="nouveauRevenu.montant" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Annuler
+                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="AjoutRevenus">
+                    Ajouter
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions{
+    [Parameter] private Impots Model { get; set; }
+
+    private void AjoutRevenus()
+    {
+
+    }
+}

@@ -32,6 +32,8 @@ namespace BlazorImpots.Model
 
         public static IEnumerable<Bareme> Bareme2019()
         {
+            // Barème 2019
+            // https://www.service-public.fr/particuliers/vosdroits/F1419
             yield return new Bareme(0, 9964, 0);
             yield return new Bareme(9965, 27519, 14);
             yield return new Bareme(27520,73779, 30);
