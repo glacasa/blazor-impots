@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace blazor_impots
+namespace BlazorImpots
 {
     public class Program
     {

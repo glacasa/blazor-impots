@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "blazor-impots", "blazor-impots\blazor-impots.csproj", "{69A5A301-38C1-4AA2-B610-DAC068D562DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorImpots", "blazor-impots\BlazorImpots.csproj", "{69A5A301-38C1-4AA2-B610-DAC068D562DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

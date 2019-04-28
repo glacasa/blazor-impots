@@ -1,0 +1,82 @@
+﻿@page "/"
+
+<header>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container">
+            <strong class="navbar-brand">
+                Simulateur d'impôt sur le revenu
+            </strong>
+        </div>
+    </div>
+</header>
+
+
+<div class="container">
+    <InfoSimu></InfoSimu>
+
+    <div class="row">
+        <div class="col-md-7">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Quotient familial</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vous déclarez vos impôts :</td>
+                        <td>
+                            <select class="form-control form-control-sm" bind="Model.EtatCivil">
+                                <option value="1">seul</option>
+                                <option value="2">en couple (mariage / PACS)</option>
+                            </select>
+                        </td>
+                        <td>
+                            <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                               title="Un couple (marié ou pacsé) faisant une déclaration commune a droit à 2 parts. Dans les autres cas, 1 part."></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'enfants à charge :</td>
+                        <td>
+                            <input type="number" bind="Model.NbEnfants" min="0" max="20" id="nbEnfants"
+                                   class="form-control form-control-sm" />
+                        </td>
+                        <td>
+                            <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                               title="Les 2 premiers enfants à charge donnent une demi-part chacun. À partir du 3ème, chaque enfant donne droit à une part supplémentaire."></i>
+                        </td>
+                    </tr>
+                    <tr>
+                            <td>Parts supplémentaires :</td>
+                            <td>
+                                <input type="number" bind="Model.PartsSupplementaires" min="0" max="5" step="0.25"
+                                       id="partsSupplementaires" class="form-control form-control-sm" />
+                            </td>
+                            <td>
+                                <i class="far fa-question-circle" data-toggle="tooltip" data-placement="right"
+                                   title="Certaines situations (invalide, anciens combattant, ...) peuvent donner droit à des majoration de parts."></i>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td>Nombre de parts :</td>
+                        <td>
+                            <strong>@Model.NbParts</strong>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <InfoBareme></InfoBareme>
+        </div>
+    </div>
+
+</div>
+
+@functions{
+    private Impots Model { get; } = new Impots();
+}
